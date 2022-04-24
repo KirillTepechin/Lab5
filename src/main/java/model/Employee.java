@@ -6,8 +6,9 @@ import javax.persistence.*;
 @Table(name = "employee")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @SequenceGenerator(name="identifier", sequenceName="seq_employee", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="identifier")
+    private Integer id;
 
     private String surname;
 
@@ -25,7 +26,7 @@ public class Employee {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -69,4 +70,12 @@ public class Employee {
         this.position = position;
     }
 
+    public String getFIO(){
+        return surname+" "+name+" "+patronymic;
+    }
+
+    @Override
+    public String toString() {
+        return "ФИО: "+getFIO()+"; Инд.доп: "+individualSurcharges+"; Должность: "+position.getName()+" || id="+id;
+    }
 }

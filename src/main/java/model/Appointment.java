@@ -7,7 +7,8 @@ import java.sql.Date;
 @Table(name = "appointment")
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="identifier", sequenceName="seq_appointment", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="identifier")
     private int id;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -60,5 +61,10 @@ public class Appointment {
 
     public void setDismissalDate(Date dismissalDate) {
         this.dismissalDate = dismissalDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Отдел: "+ department.getName()+"; Работник: "+ employee.getFIO() + "; Дата наз.: "+appointmentDate+"; Дата увол.: "+dismissalDate+" || id="+id;
     }
 }

@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "department")
 public class Department {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="identifier", sequenceName="seq_department", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="identifier")
     private int id;
 
     private String name;
@@ -47,5 +48,10 @@ public class Department {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Название: "+name+"; Номер тел.: "+phoneNumber+"; Кол-во работников: "+numberOfEmployees+" || id="+id;
     }
 }
