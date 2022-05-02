@@ -1,9 +1,14 @@
 package model;
 
+import com.sun.istack.Nullable;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employee",indexes = { @Index(name = "IDX_MYIDX_EMPLOYEE", columnList = "id, surname") })
 public class Employee {
     @Id
     @SequenceGenerator(name="identifier", sequenceName="seq_employee", allocationSize=1)
@@ -20,7 +25,7 @@ public class Employee {
     private float individualSurcharges;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Position position;
+    private Position position = null;
 
     public int getId() {
         return id;
@@ -74,8 +79,14 @@ public class Employee {
         return surname+" "+name+" "+patronymic;
     }
 
+    public void nullificationPosition(){
+        this.position = null;
+    }
     @Override
     public String toString() {
+        if(position==null){
+            return "ФИО: "+getFIO()+"; Инд.доп: "+individualSurcharges+"; Должность: "+" || id="+id;
+        }
         return "ФИО: "+getFIO()+"; Инд.доп: "+individualSurcharges+"; Должность: "+position.getName()+" || id="+id;
     }
 }

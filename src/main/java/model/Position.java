@@ -1,9 +1,12 @@
 package model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+import java.util.Currency;
 
 @Entity
-@Table(name = "position")
+@Table(name = "position",indexes = { @Index(name = "IDX_MYIDX_POSITION", columnList = "id, salary,number_of_employeers") })
 public class Position {
     @Id
     @SequenceGenerator(name="identifier", sequenceName="seq_position", allocationSize=1)
@@ -12,7 +15,7 @@ public class Position {
 
     private String name;
 
-    private int salary;
+    private float salary;
 
     @Column(name = "number_of_employeers")
     private int numberOfEmployees;
@@ -33,11 +36,11 @@ public class Position {
         this.name = name;
     }
 
-    public int getSalary() {
+    public float getSalary() {
         return salary;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(float salary) {
         this.salary = salary;
     }
 

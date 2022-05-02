@@ -28,14 +28,15 @@ public class DepartmentLogic {
 
         query.select(root);
 
-        return session.createQuery(query).getResultList();
+        var list = session.createQuery(query).getResultList();
+        return list;
     }
-    public void createDepartment(String name, int numberOfEmployees, String phoneNumber){
+    public void createDepartment(String name, String phoneNumber){
         Transaction transaction = session.beginTransaction();
 
         Department department = new Department();
         department.setName(name);
-        department.setNumberOfEmployees(numberOfEmployees);
+        department.setNumberOfEmployees(0);
         department.setPhoneNumber(phoneNumber);
         session.save(department);
 
@@ -44,18 +45,15 @@ public class DepartmentLogic {
 
     public void deleteDepartment(int id){
         Transaction transaction = session.beginTransaction();
-
         session.delete(getDepartment(id));
-
         transaction.commit();
     }
 
-    public void updateDepartment(int id, String name, int numberOfEmployees, String phoneNumber){
+    public void updateDepartment(int id, String name, String phoneNumber){
         Transaction transaction = session.beginTransaction();
 
         Department department = getDepartment(id);
         department.setName(name);
-        department.setNumberOfEmployees(numberOfEmployees);
         department.setPhoneNumber(phoneNumber);
         session.update(department);
 

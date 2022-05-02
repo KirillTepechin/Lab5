@@ -1,20 +1,24 @@
 package model;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "appointment")
+@Table(name = "appointment",indexes = { @Index(name = "IDX_MYIDX_EMPLOYEE", columnList = "id, appointment_date, dismissal_date") })
 public class Appointment {
     @Id
     @SequenceGenerator(name="identifier", sequenceName="seq_appointment", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="identifier")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Department department;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Employee employee;
 
     @Column(name = "appointment_date")

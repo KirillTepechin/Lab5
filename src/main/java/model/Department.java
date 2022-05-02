@@ -3,7 +3,7 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "department")
+@Table(name = "department",indexes = { @Index(name = "IDX_MYIDX_EMPLOYEE", columnList = "id, name") })
 public class Department {
     @Id
     @SequenceGenerator(name="identifier", sequenceName="seq_department", allocationSize=1)

@@ -4,7 +4,7 @@ package queryDTO;
 public class HandBookDTO {
 
     private String surname;
-    private int salary;
+    private float salary;
 
     public String getSurname() {
         return surname;
@@ -14,11 +14,11 @@ public class HandBookDTO {
         this.surname = surname;
     }
 
-    public int getSalary() {
+    public float getSalary() {
         return salary;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(float salary) {
         this.salary = salary;
     }
 

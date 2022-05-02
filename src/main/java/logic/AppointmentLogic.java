@@ -30,26 +30,34 @@ public class AppointmentLogic {
 
         query.select(root);
 
-        return session.createQuery(query).getResultList();
+        var list = session.createQuery(query).getResultList();
+        return list;
     }
     public void createAppointment(int departmentId, int employeeId, Date appointmentDate, Date dismissalDate){
         Transaction transaction = session.beginTransaction();
 
         Appointment appointment = new Appointment();
-        appointment.setDepartment(session.get(Department.class, departmentId));
+
+        Department department = session.get(Department.class, departmentId);
+        department.setNumberOfEmployees(department.getNumberOfEmployees()+1);
+
+        appointment.setDepartment(department);
         appointment.setEmployee(session.get(Employee.class, employeeId));
         appointment.setAppointmentDate(appointmentDate);
         appointment.setDismissalDate(dismissalDate);
 
         session.save(appointment);
-
+        session.update(department);
         transaction.commit();
     }
 
     public void deleteAppointment(int id){
         Transaction transaction = session.beginTransaction();
 
+        Department department = session.get(Department.class, getAppointment(id).getDepartment().getId());
+        department.setNumberOfEmployees(department.getNumberOfEmployees() - 1);
         session.delete(getAppointment(id));
+        session.update(department);
 
         transaction.commit();
     }
@@ -57,11 +65,19 @@ public class AppointmentLogic {
     public void updateAppointment(int id, int departmentId, int employeeId, Date appointmentDate, Date dismissalDate){
         Transaction transaction = session.beginTransaction();
 
-        Appointment appointment = new Appointment();
-        appointment.setDepartment(session.get(Department.class, departmentId));
+        Appointment appointment = getAppointment(id);
+        Department departmentOld = appointment.getDepartment();
+        departmentOld.setNumberOfEmployees(departmentOld.getNumberOfEmployees()-1);
+        Department departmentNew = session.get(Department.class, departmentId);
+        appointment.setDepartment(departmentNew);
+        departmentNew.setNumberOfEmployees(departmentNew.getNumberOfEmployees()+1);
         appointment.setEmployee(session.get(Employee.class, employeeId));
         appointment.setAppointmentDate(appointmentDate);
         appointment.setDismissalDate(dismissalDate);
+
+        session.update(appointment);
+        session.update(departmentOld);
+        session.update(departmentNew);
 
         transaction.commit();
     }

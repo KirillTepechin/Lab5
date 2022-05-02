@@ -3,8 +3,6 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.*;
 
-import java.net.ConnectException;
-
 
 public class Connector {
 
